@@ -11,8 +11,9 @@ Sub-commands:
 
 import os
 import argparse
-import pandas as pd
+import github
 from github import Github
+import pandas as pd
 import ghtoken
 import sys
 
@@ -41,7 +42,8 @@ def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
 
 
     # 2) Initialize GitHub client and get the repo
-    instance = Github(login_or_token=token)
+    auth = github.Auth.Token(token)
+    instance = Github(auth)
     user = instance.get_user()
     repo = user.get_repo(repo_name)
 
