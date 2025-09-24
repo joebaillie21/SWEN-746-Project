@@ -21,8 +21,16 @@ def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
     Returns a DataFrame with columns: sha, author, email, date, message.
     """
     # 1) Read GitHub token from environment
-    token = ghtoken.ghtoken_from_dotenv()
-    print(token)
+    token = None
+    try:
+      token = ghtoken.ghtoken_from_dotenv()
+      print(token)
+    except:
+        print('No token found from .env file. Attempting to retrieve')
+        print('token from environmental variables...')
+        token = os.environ.get('GITHUB_TOKEN')
+        
+
 
     # 2) Initialize GitHub client and get the repo
     # TODO
@@ -62,8 +70,14 @@ def main():
     #     df.to_csv(args.out, index=False)
     #     print(f"Saved {len(df)} commits to {args.out}")
 
-    token = ghtoken.ghtoken_from_dotenv()
-    print(token)
+    token = None
+    try:
+      token = ghtoken.ghtoken_from_dotenv()
+      print(token)
+    except:
+        print('No token found from .env file. Attempting to retrieve')
+        print('token from environmental variables...')
+        token = os.environ.get('GITHUB_TOKEN')
 
 if __name__ == "__main__":
     main()
