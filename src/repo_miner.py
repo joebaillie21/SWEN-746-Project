@@ -41,7 +41,7 @@ def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
 
 
     # 2) Initialize GitHub client and get the repo
-    instance = Github(auth=token)
+    instance = Github(login_or_token=token)
     user = instance.get_user()
     repo = user.get_repo(repo_name)
 
