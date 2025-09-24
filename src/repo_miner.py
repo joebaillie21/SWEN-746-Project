@@ -41,16 +41,35 @@ def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
 
 
     # 2) Initialize GitHub client and get the repo
-    # TODO
+    instance = Github(auth=token)
+    user = instance.get_user()
+    repo = user.get_repo(repo_name)
 
     # 3) Fetch commit objects (paginated by PyGitHub)
-    # TODO
+    commits = repo.get_commits()
 
     # 4) Normalize each commit into a record dict
-    # TODO
+    records = []
+    count = 0
+    for commit in commits:
+        if max_commits and count >= max_commits:
+          break
+        record = {
+            'sha' : commit.sha,
+            'author' : commit.author.name if commit.author else None,
+            'email' : commit.author.email if commit.author else None,
+            'date' : commit.commit.author.date,
+            'message' : commit.commit.message
+          }
+        records.append(record)
+        count+=1
+       
+       
 
     # 5) Build DataFrame from records
-    # TODO
+    df = pd.DataFrame(records)
+
+    return df
     
 
 def main():
