@@ -76,29 +76,26 @@ def main():
     """
     Parse command-line arguments and dispatch to sub-commands.
     """
-    # parser = argparse.ArgumentParser(
-    #     prog="repo_miner",
-    #     description="Fetch GitHub commits/issues and summarize them"
-    # )
-    # subparsers = parser.add_subparsers(dest="command", required=True)
+    parser = argparse.ArgumentParser(
+        prog="repo_miner",
+        description="Fetch GitHub commits/issues and summarize them"
+    )
+    subparsers = parser.add_subparsers(dest="command", required=True)
 
     # # Sub-command: fetch-commits
-    # c1 = subparsers.add_parser("fetch-commits", help="Fetch commits and save to CSV")
-    # c1.add_argument("--repo", required=True, help="Repository in owner/repo format")
-    # c1.add_argument("--max",  type=int, dest="max_commits",
-    #                 help="Max number of commits to fetch")
-    # c1.add_argument("--out",  required=True, help="Path to output commits CSV")
+    c1 = subparsers.add_parser("fetch-commits", help="Fetch commits and save to CSV")
+    c1.add_argument("--repo", required=True, help="Repository in owner/repo format")
+    c1.add_argument("--max",  type=int, dest="max_commits",
+                    help="Max number of commits to fetch")
+    c1.add_argument("--out",  required=True, help="Path to output commits CSV")
 
-    # args = parser.parse_args()
+    args = parser.parse_args()
 
     # # Dispatch based on selected command
-    # if args.command == "fetch-commits":
-    #     df = fetch_commits(args.repo, args.max_commits)
-    #     df.to_csv(args.out, index=False)
-    #     print(f"Saved {len(df)} commits to {args.out}")
-
-      # 1) Read GitHub token from environment
-        
+    if args.command == "fetch-commits":
+        df = fetch_commits(args.repo, args.max_commits)
+        df.to_csv(args.out, index=False)
+        print(f"Saved {len(df)} commits to {args.out}")
 
 if __name__ == "__main__":
     main()
