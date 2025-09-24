@@ -1,0 +1,2 @@
+[console_scripts]
+ghtoken = ghtoken.__main__:main
