@@ -27,7 +27,6 @@ def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
     # A) Attempt to get a token from the .env file
     try:
       token = ghtoken.ghtoken_from_dotenv()
-      print(token)
     except:
         print('No token found from .env file.')
 
@@ -80,23 +79,6 @@ def main():
     #     print(f"Saved {len(df)} commits to {args.out}")
 
       # 1) Read GitHub token from environment
-    token = None
-
-    # A) Attempt to get a token from the .env file
-    try:
-      token = ghtoken.ghtoken_from_dotenv()
-      print(token)
-    except:
-        print('No token found from .env file.')
-
-    # B) If token was not retrieved from .env, get from environment var
-    if not token:
-        print('Token not found from local .env, searching for environment variable...')
-        try:
-          token = os.environ.get('GITHUB_TOKEN')
-        except:
-          print('No token found from environment. Exitting...')
-          sys.exit(0)
         
 
 if __name__ == "__main__":
