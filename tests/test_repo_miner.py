@@ -90,8 +90,31 @@ def test_fetch_commits_basic(monkeypatch):
 def test_fetch_commits_limit(monkeypatch):
     # More commits than max_commits
     # TODO： Test that fetch_commits respects the max_commits limit.
+    now = datetime.now()
+    commits = [
+        DummyCommit(f"sha{i}", f"Author{i}", f"author{i}@example.com", now - timedelta(days=i), f"Commit {i}")
+        for i in range(10)
+    ]
+    gh_instance._repo = DummyRepo(commits, [])
+    
+    # Patch fetch_commits to limit the number of commits
+    monkeypatch.setattr("src.repo_miner.MAX_COMMITS", 5)
+    
+    df = fetch_commits("any/repo")
+    assert len(df) == 5
+    assert df.iloc[0]["sha"] == "sha0"
+    assert df.iloc[-1]["sha"] == "sha4"
     assert True
 
 def test_fetch_commits_empty(monkeypatch):
     # TODO: Test that fetch_commits returns empty DataFrame when no commits exist.
+    # Setup empty commits
+    gh_instance._repo = DummyRepo([], [])
+
+    # Call fetch_commits
+    df = fetch_commits("any/repo")
+
+    # Assert the DataFrame is empty
+    assert df.empty
+    assert list(df.columns) == ["sha", "author", "email", "date", "message"]
     assert True
