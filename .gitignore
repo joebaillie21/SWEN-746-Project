@@ -1,3 +1,4 @@
 .env
 .venv
 settings.json
+*.csv

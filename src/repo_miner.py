@@ -42,10 +42,8 @@ def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
 
 
     # 2) Initialize GitHub client and get the repo
-    auth = github.Auth.Token(token)
-    instance = Github(auth)
-    user = instance.get_user()
-    repo = user.get_repo(repo_name)
+    instance = Github(auth=github.Auth.Token(token))
+    repo = instance.get_repo(repo_name)
 
     # 3) Fetch commit objects (paginated by PyGitHub)
     commits = repo.get_commits()
