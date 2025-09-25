@@ -28,18 +28,16 @@ def fetch_commits(repo_name: str, max_commits: int = None) -> pd.DataFrame:
     # A) Attempt to get a token from the .env file
     try:
       token = ghtoken.ghtoken_from_dotenv()
-    except:
-        print('No token found from .env file.')
+    except Exception as e:
+        print(e)
 
     # B) If token was not retrieved from .env, get from environment var
     if not token:
         try:
           token = os.environ.get('GITHUB_TOKEN')
-        except:
-          print('No token found from environment. Exitting...')
-          sys.exit(0)
-        
-
+        except Exception as e:
+          print(e)
+          return None
 
     # 2) Initialize GitHub client and get the repo
     instance = Github(auth=github.Auth.Token(token))
@@ -94,6 +92,8 @@ def main():
     # # Dispatch based on selected command
     if args.command == "fetch-commits":
         df = fetch_commits(args.repo, args.max_commits)
+        if not df:
+           sys.exit(-1)
         df.to_csv(args.out, index=False)
         print(f"Saved {len(df)} commits to {args.out}")
 
