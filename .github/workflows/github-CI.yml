@@ -6,7 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main", "rm1-dev" ]
+    branches: [ "main", "rm1-dev", 'rm2-dev' ]
   pull_request:
     branches: [ "main" ]
 
@@ -34,4 +34,14 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run fetch-commits
-        run: python -m src.repo_miner fetch-commits --repo=owner/repo --max=100 --out=commits.csv
+        run: python -m src.repo_miner fetch-commits --repo=joebaillie21/SWEN-746-Project --max=100 --out=commits.csv
+
+      - name: Run fetch-issues all
+        run: python -m src.repo_miner fetch-issues --repo=joebaillie21/SWEN-746-Project --max=100 --out=issues.csv
+
+      - name: Run fetch-issues open
+        run: python -m src.repo_miner fetch-issues --repo=joebaillie21/SWEN-746-Project --state=open --max=100 --out=issues1.csv
+
+      - name: Run fetch-issues closed
+        run: python -m src.repo_miner fetch-issues --repo=joebaillie21/SWEN-746-Project --state=closed --max=100 --out=issues2.csv
+        
