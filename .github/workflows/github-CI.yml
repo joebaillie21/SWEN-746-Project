@@ -34,4 +34,4 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run fetch-commits
-        run: python -m src.repo_miner fetch-commits --repo=owner/repo --max=100 --out=commits.csv
+        run: python -m src.repo_miner fetch-commits --repo=joebaillie21/SWEN-746-Project --max=100 --out=commits.csv
