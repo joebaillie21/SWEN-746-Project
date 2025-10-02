@@ -92,7 +92,7 @@ def main():
     # # Dispatch based on selected command
     if args.command == "fetch-commits":
         df = fetch_commits(args.repo, args.max_commits)
-        if not df:
+        if df.empty:
            sys.exit(-1)
         df.to_csv(args.out, index=False)
         print(f"Saved {len(df)} commits to {args.out}")
