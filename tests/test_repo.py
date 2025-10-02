@@ -158,3 +158,28 @@ def test_fetch_issues_empty(patch_env_and_github):
     patch_env_and_github._repo = DummyRepo([], issues)
     df = fetch_issues("any/repo")
     assert df.empty
+
+def test_fetch_issues_exclude_pr(patch_env_and_github):
+    # Setup dummy issues
+    now = datetime.now()
+    issues = [
+        DummyIssue("id_1", "1", "Issue 1", "Alice", "closed", datetime(2025, 10, 1), datetime(2025, 10, 1), "CI Broke", False),
+        DummyIssue(id_="id_1", number="2", title="Issue 2", user="Bob", state="open", created_at="2025-10-1", closed_at=None, comments="CI still broke", is_pr=True),
+    ]
+    patch_env_and_github._repo = DummyRepo([], issues=issues)
+    df = fetch_issues("any/repo")
+    assert list(df.columns) == ["id","number","title","user","state","created_at","closed_at","open_duration_days","comments"]
+    assert len(df) == 1
+    assert df.iloc[0]["comments"] == "CI Broke"
+
+def test_fetch_issues_duration_calc(patch_env_and_github):
+    # Setup dummy issues
+    now = datetime.now()
+    issues = [
+        DummyIssue("id_1", "1", "Issue 1", "Alice", "closed", datetime(2025, 10, 1), datetime(2025, 10, 2), "CI Broke", False),
+    ]
+    patch_env_and_github._repo = DummyRepo([], issues=issues)
+    df = fetch_issues("any/repo")
+    assert list(df.columns) == ["id","number","title","user","state","created_at","closed_at","open_duration_days","comments"]
+    assert len(df) == 1
+    assert df.iloc[0]["open_duration_days"] == 1
