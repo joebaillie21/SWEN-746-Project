@@ -9,6 +9,7 @@ Sub-commands:
   - fetch-commits
 """
 
+from datetime import datetime
 import os
 import argparse
 import github
@@ -112,6 +113,8 @@ def fetch_issues(repo_name: str, state: str = "all", max_issues: int = None) -> 
         if issue.created_at and issue.closed_at:
             duration = issue.closed_at - issue.created_at
             open_duration_days = duration.days
+           
+
         
         # Append records
         record = {
@@ -120,9 +123,9 @@ def fetch_issues(repo_name: str, state: str = "all", max_issues: int = None) -> 
             'title': issue.title,
             'user': issue.user.login if issue.user else None,
             'state': issue.state,
-            'created_at': issue.created_at.isoformat() if issue.created_at else None,
-            'closed_at': issue.closed_at.isoformat() if issue.closed_at else None,
-            'open_duration_days': open_duration_days if open_duration_days != None else 'Ongoing',
+            'created_at': issue.created_at.isoformat() if hasattr(issue.created_at, 'isoformat') else str(issue.created_at) if issue.created_at else None,
+            'closed_at': issue.closed_at.isoformat() if hasattr(issue.closed_at, 'isoformat') else str(issue.closed_at) if issue.closed_at else None,
+            'open_duration_days': open_duration_days,
             'comments': issue.comments
         }
         records.append(record)
