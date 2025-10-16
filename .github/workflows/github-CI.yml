@@ -6,7 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main", "rm1-dev", 'rm2-dev' ]
+    branches: [ "main", "rm1-dev", 'rm2-dev', 'rm3-dev']
   pull_request:
     branches: [ "main" ]
 
@@ -44,4 +44,7 @@ jobs:
 
       - name: Run fetch-issues closed
         run: python -m src.repo_miner fetch-issues --repo=joebaillie21/SWEN-746-Project --state=closed --max=100 --out=issues2.csv
+      
+      - name: Run pytests
+        run: python -m src.test_repo
         
