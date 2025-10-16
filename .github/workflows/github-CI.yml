@@ -46,5 +46,5 @@ jobs:
         run: python -m src.repo_miner fetch-issues --repo=joebaillie21/SWEN-746-Project --state=closed --max=100 --out=issues2.csv
       
       - name: Run pytests
-        run: python -m src.test_repo
+        run: python -m tests.test_repo
         
